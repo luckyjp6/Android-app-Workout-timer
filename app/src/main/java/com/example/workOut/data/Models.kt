@@ -34,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -152,7 +151,7 @@ fun ExerciseInputScreen(
     OutlinedTextField(
         value = exercise.name,
         onValueChange = {
-            viewModel.updateExercise(exercise.copy(name = it.toString()))
+            viewModel.updateExercise(exercise.copy(name = it))
         },
         label = { Text("運動名稱") },
         modifier = Modifier.fillMaxWidth()
@@ -163,7 +162,7 @@ fun ExerciseInputScreen(
     OutlinedTextField(
         value = exercise.description,
         onValueChange = {
-            viewModel.updateExercise(exercise.copy(description = it.toString()))
+            viewModel.updateExercise(exercise.copy(description = it))
 //            onValueChange(exercise.copy(description = it.toString()))
         },
         label = { Text("詳細敘述（選填）") },
@@ -175,7 +174,7 @@ fun ExerciseInputScreen(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text("計算類型")
         Spacer(modifier = Modifier.width(8.dp))
-        com.example.workOut.data.DropdownMenu(
+        DropdownMenu(
             options = listOf("計數", "計時"),
             selectedOption = exercise.type,
             onOptSelected = {

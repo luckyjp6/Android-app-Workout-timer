@@ -7,11 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.workOut.data.Exercise
 import com.example.workOut.data.ExerciseDisplayScreen
@@ -48,7 +44,6 @@ fun TrainingScreen (
     var isRest by remember { mutableStateOf(false) }
     var isPrepared by remember { mutableStateOf(false) }
     var numSet by remember { mutableIntStateOf(0) }
-    val context = LocalContext.current
 
     // Finish
     if (currentExercise == null) {
@@ -126,7 +121,6 @@ fun TrainingScreen (
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (currentExercise.type == ExerciseType.TIMER) {
-                    ttsViewModel.speak("${currentExercise.name}, ${currentExercise.description}, ${currentExercise.countOrTime} 秒一組, 第${numSet+1}組")
                     if (isPrepared) {
                         Text("Go!", style = MaterialTheme.typography.displayLarge)
                         Spacer(Modifier.height(8.dp))
@@ -138,6 +132,7 @@ fun TrainingScreen (
                         )
                     } else {
                         // Prepare time: 5 sec
+                        ttsViewModel.speak("${currentExercise.name}, ${currentExercise.description}, ${currentExercise.countOrTime} 秒一組, 第${numSet+1}組")
                         Text("Ready...", style = MaterialTheme.typography.displayLarge)
                         Spacer(Modifier.height(8.dp))
                         CountDownTimer(
