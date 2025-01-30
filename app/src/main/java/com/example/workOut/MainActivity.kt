@@ -77,8 +77,7 @@ fun WorkOut(exerciseViewModel: ExerciseViewModel, ttsViewModel: TTSViewModel) {
         "training" -> TrainingScreen(
             ttsViewModel = ttsViewModel,
             exercises = exerciseViewModel.exercises.collectAsState().value,
-            onFinish = { currentScreen = "menuDetails" } // TODO: congratulation screen
+            onFinish = { currentScreen = "menuDetails" }
         )
     }
-
 }

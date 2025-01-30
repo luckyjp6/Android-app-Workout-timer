@@ -30,16 +30,6 @@ object TTSManager {
                         Log.e("TTS", "TextToSpeech initialization failed with status: $status")
                     }
                 }
-//                if (status == TextToSpeech.SUCCESS) {
-//                    val result = textToSpeech?.setLanguage(Locale.US) // 你可以換成 Locale.CHINESE
-//                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-//                        Log.e("TTS", "Language not supported")
-//                    } else {
-//                        Log.d("TTS", "Start tts manager")
-//                    }
-//                } else {
-//                    Log.e("TTS", "Initialization fail")
-//                }
             }
         }
     }

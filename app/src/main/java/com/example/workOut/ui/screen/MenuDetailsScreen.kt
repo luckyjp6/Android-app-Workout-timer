@@ -59,10 +59,6 @@ fun MenuDetailsScreen(
     var isEditMenu by remember { mutableStateOf(false) }
     var newMenuName by remember { mutableStateOf(menuName) }
 
-//    LaunchedEffect(menuName) {
-//        viewModel.loadExercises(menuName)
-//    }
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -155,7 +151,6 @@ fun MenuDetailsScreen(
             }
 
             // Exercises
-//            exerciseItems.forEach { exercise ->
             items(exerciseItems) { exercise ->
                 var isEditing by remember { mutableStateOf(false) }
                 var oldExercise by remember { mutableStateOf(exercise) }

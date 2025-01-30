@@ -35,16 +35,19 @@ fun CountDownTimer (
         if (!isPaused && timeLeft > 0) {
             delay(1000L)
             timeLeft--
+
             if (timeLeft in 1..startSpeak) ttsViewModel.speak(timeLeft.toString())
         }
-        if (timeLeft == 0) { onFinish() }
+        if (timeLeft == 0) {
+            onFinish()
+        }
     }
     Text(timeStringGenerator(timeLeft), style = style)
     Spacer(Modifier.height(8.dp))
     Row {
         Button(onClick = { isPaused = !isPaused }) {
             Text(
-                text = if(isPaused) "Continue" else "Pause",
+                text = if (isPaused) "Continue" else "Pause",
                 style = MaterialTheme.typography.headlineMedium
             )
         }
@@ -55,5 +58,4 @@ fun CountDownTimer (
             )
         }
     }
-
 }

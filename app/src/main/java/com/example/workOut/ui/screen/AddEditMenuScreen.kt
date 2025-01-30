@@ -44,7 +44,6 @@ import com.example.workOut.data.Menu
 import com.example.workOut.data.timeStringGenerator
 import com.example.workOut.viewModel.ExerciseViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditMenuScreen (
     viewModel: ExerciseViewModel,
@@ -143,9 +142,7 @@ fun AddMenuNameScreen(
             OutlinedTextField(
                 value = menuName,
                 onValueChange = {
-//                    if (isMenuNameValid) {
-                        menuName = it.toString()
-//                    }
+                        menuName = it
                 },
                 label = { Text("Enter menu name") },
                 modifier = Modifier.fillMaxWidth(),
@@ -249,7 +246,6 @@ fun AddExerciseScreen(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-//            exerciseItems.forEach { exercise ->
             items(exerciseItems) { exercise ->
                 Card(
                     modifier = Modifier

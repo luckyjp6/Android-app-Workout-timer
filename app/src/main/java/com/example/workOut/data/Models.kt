@@ -55,9 +55,6 @@ data class Menu (
     var estimatedTime: Int = 0
 )
 
-//@Composable
-//fun
-
 // Details of each menu
 @Entity(
     tableName = "exercises",
@@ -111,8 +108,6 @@ fun ExerciseDisplayScreen(
         // Name
         Text(
             text = exercise.name,
-//            fontSize = normalSize,
-//            fontWeight = FontWeight.Normal
              style = if (onlyNameAndDescription) MaterialTheme.typography.headlineLarge else MaterialTheme.typography.titleLarge
         )
         Spacer(Modifier.height(4.dp))
@@ -145,8 +140,6 @@ fun ExerciseInputScreen(
     viewModel: ExerciseViewModel,
     exercise: Exercise
 ) {
-    // Exercise ID (for debug
-//    Text(exercise.id.toString())
     // name
     OutlinedTextField(
         value = exercise.name,
@@ -163,7 +156,6 @@ fun ExerciseInputScreen(
         value = exercise.description,
         onValueChange = {
             viewModel.updateExercise(exercise.copy(description = it))
-//            onValueChange(exercise.copy(description = it.toString()))
         },
         label = { Text("詳細敘述（選填）") },
         modifier = Modifier.fillMaxWidth()

@@ -54,8 +54,6 @@ interface ExerciseDao {
     suspend fun updateExerciseName(oldName: String, newName: String, menuName: String)
     @Update
     suspend fun updateExercise(exercise: Exercise)
-//    suspend fun updateExercise(name: String, description: String, type: ExerciseType, countOrTime: Int, restTime: Int)
-
 
 //    Delete
     @Delete

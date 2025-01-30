@@ -20,8 +20,8 @@ import javax.inject.Inject
 class ExerciseViewModel @Inject constructor(private val dao: ExerciseDao) : ViewModel() {
     val allMenus: StateFlow<List<Menu>> = dao.getAllMenus()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-    val allExercise: StateFlow<List<Exercise>> = dao.getAllExercises()
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+//    val allExercise: StateFlow<List<Exercise>> = dao.getAllExercises()
+//        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     private val _exercises = MutableStateFlow<List<Exercise>>(emptyList())
     val exercises: StateFlow<List<Exercise>> = _exercises.asStateFlow()
     val estimatedTime = _exercises.map { e ->
@@ -79,11 +79,11 @@ class ExerciseViewModel @Inject constructor(private val dao: ExerciseDao) : View
         _exercises.value.forEach { exercise ->
             saveExercise(exercise)
         }
-        updateMenuEstimatedTime(_exercises.value[0].menu)
     }
     fun saveExercise(exercise: Exercise) = viewModelScope.launch {
         if (dao.isExerciseExist(exercise.id)) { dao.updateExercise(exercise) }
         else { dao.insertExercise(exercise) }
+        updateMenuEstimatedTime(exercise.menu)
     }
     fun deleteExercise(exercise: Exercise) = viewModelScope.launch {
         if (dao.isExerciseExist(exercise.id)) { dao.deleteExercise(exercise) }

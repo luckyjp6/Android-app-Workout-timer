@@ -82,6 +82,7 @@ fun TrainingScreen (
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                ttsViewModel.speak("休息")
                 Text(text = "Take a rest", style = MaterialTheme.typography.displayLarge)
                 CountDownTimer(
                     ttsViewModel = ttsViewModel,
@@ -97,11 +98,8 @@ fun TrainingScreen (
                     },
                     style = MaterialTheme.typography.displayLarge
                 )
-                // TODO: skip rest time
             }
         } else {
-//            Spacer(Modifier.height(16.dp))
-//            Spacer(Modifier.width(4.dp))
             Column(
                 modifier = Modifier
                     .fillMaxSize()
