@@ -3,6 +3,7 @@ package com.example.workOut.utils
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -51,6 +52,7 @@ fun CountDownTimer (
                 style = MaterialTheme.typography.headlineMedium
             )
         }
+        Spacer(Modifier.width(4.dp))
         Button(onClick = { timeLeft = 0 }) {
             Text(
                 text = "Skip",

@@ -40,9 +40,6 @@ class ExerciseViewModel @Inject constructor(private val dao: ExerciseDao) : View
     fun updateMenuName(oldName: String, newName: String) = viewModelScope.launch {
         dao.updateMenuName(oldName, newName)
     }
-    fun deleteMenu(menu: Menu) = viewModelScope.launch {
-        dao.deleteMenu(menu)
-    }
     fun deleteMenu(menuName: String) = viewModelScope.launch {
         dao.deleteMenu(menuName)
     }
@@ -79,6 +76,7 @@ class ExerciseViewModel @Inject constructor(private val dao: ExerciseDao) : View
         _exercises.value.forEach { exercise ->
             saveExercise(exercise)
         }
+        updateMenuEstimatedTime(_exercises.value[0].menu)
     }
     fun saveExercise(exercise: Exercise) = viewModelScope.launch {
         if (dao.isExerciseExist(exercise.id)) { dao.updateExercise(exercise) }

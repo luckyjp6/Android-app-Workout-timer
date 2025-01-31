@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,7 +22,9 @@ import com.example.workOut.ui.screen.AddEditMenuScreen
 import com.example.workOut.ui.screen.MenuDetailsScreen
 import com.example.workOut.ui.screen.MenuListScreen
 import com.example.workOut.ui.screen.TrainingScreen
+import com.example.workOut.ui.theme.DynamicThemeSetup
 import com.example.workOut.viewModel.ExerciseViewModel
+import com.example.workOut.viewModel.SettingViewModel
 import com.example.workOut.viewModel.TTSViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,11 +41,13 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val exerciseViewModel: ExerciseViewModel = hiltViewModel()
-                    val ttsViewModel: TTSViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-                        .get(TTSViewModel::class.java)
+                    val ttsViewModel: TTSViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[TTSViewModel::class.java]
+                    val settingViewModel = SettingViewModel()
 
-                    ttsViewModel.speak("Hello, welcome to the app!")
-                    WorkOut(exerciseViewModel, ttsViewModel)
+                    settingViewModel.setIsDarkTheme(isSystemInDarkTheme())
+                    DynamicThemeSetup(settingViewModel) {
+                        WorkOut(exerciseViewModel, ttsViewModel, settingViewModel)
+                    }
                 }
             }
         }
@@ -50,18 +55,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun WorkOut(exerciseViewModel: ExerciseViewModel, ttsViewModel: TTSViewModel) {
+fun WorkOut(
+    exerciseViewModel: ExerciseViewModel,
+    ttsViewModel: TTSViewModel,
+    settingViewModel: SettingViewModel
+) {
     var menu by remember { mutableStateOf("") }
     var currentScreen by remember { mutableStateOf("menuList") }
 
     when (currentScreen) {
         "menuList" -> MenuListScreen(
             viewModel = exerciseViewModel,
+            settingViewModel = settingViewModel,
             onMenuSelected = { selectedMenu ->
                 menu = selectedMenu
                 currentScreen = "menuDetails"
             },
-            onAddmenuClicked = { currentScreen = "addEditMenu" }
+            onAddMenuClicked = { currentScreen = "addEditMenu" }
         )
         "addEditMenu" -> AddEditMenuScreen(
             viewModel = exerciseViewModel,

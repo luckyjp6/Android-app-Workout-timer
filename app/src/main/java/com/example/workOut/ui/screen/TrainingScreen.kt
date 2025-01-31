@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -52,8 +54,9 @@ fun TrainingScreen (
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "你超棒！", style = MaterialTheme.typography.displayLarge)
             ttsViewModel.speak("你超棒")
+            Text(text = "你超棒！", style = MaterialTheme.typography.displayLarge)
+            Spacer(Modifier.height(16.dp))
             Button(onClick = onFinish) {
                 Text("Home")
             }
@@ -64,12 +67,15 @@ fun TrainingScreen (
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(currentExercise.menu, style = MaterialTheme.typography.titleLarge) },
+                title = { Text(currentExercise.menu, style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onFinish) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Home")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Home",
+                            tint = MaterialTheme.colorScheme.onPrimary)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
             )
         }
     ) { paddingValue ->
@@ -112,47 +118,50 @@ fun TrainingScreen (
                 ExerciseDisplayScreen(currentExercise, onlyNameAndDescription = true)
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("第 ${numSet + 1} 組")
-            }
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (currentExercise.type == ExerciseType.TIMER) {
-                    if (isPrepared) {
-                        Text("Go!", style = MaterialTheme.typography.displayLarge)
-                        Spacer(Modifier.height(8.dp))
-                        CountDownTimer(
-                            ttsViewModel = ttsViewModel,
-                            totalTime = currentExercise.countOrTime,
-                            onFinish = { isRest = true },
-                            style = MaterialTheme.typography.displayLarge
-                        )
+                Spacer(Modifier.width(8.dp))
+
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (currentExercise.type == ExerciseType.TIMER) {
+                        if (isPrepared) {
+                            ttsViewModel.speak("${currentExercise.name}, ${currentExercise.countOrTime} 秒一組, 第${numSet + 1}組, ${currentExercise.description}")
+                            Text("Go!", style = MaterialTheme.typography.displayLarge)
+                            Spacer(Modifier.height(8.dp))
+                            CountDownTimer(
+                                ttsViewModel = ttsViewModel,
+                                totalTime = currentExercise.countOrTime,
+                                onFinish = { isRest = true },
+                                style = MaterialTheme.typography.displayLarge
+                            )
+                        } else {
+                            // Prepare time: 5 sec
+                            ttsViewModel.speak(currentExercise.name)
+                            Text("Ready...", style = MaterialTheme.typography.displayLarge)
+                            Spacer(Modifier.height(8.dp))
+                            CountDownTimer(
+                                ttsViewModel = ttsViewModel,
+                                totalTime = 5,
+                                startSpeak = 3,
+                                onFinish = { isPrepared = true },
+                                style = MaterialTheme.typography.displayLarge
+                            )
+                        }
                     } else {
-                        // Prepare time: 5 sec
-                        ttsViewModel.speak("${currentExercise.name}, ${currentExercise.description}, ${currentExercise.countOrTime} 秒一組, 第${numSet+1}組")
-                        Text("Ready...", style = MaterialTheme.typography.displayLarge)
-                        Spacer(Modifier.height(8.dp))
-                        CountDownTimer(
-                            ttsViewModel = ttsViewModel,
-                            totalTime = 5,
-                            startSpeak = 3,
-                            onFinish = { isPrepared = true },
+                        ttsViewModel.speak("${currentExercise.name}, ${currentExercise.countOrTime} 次一組, 第${numSet + 1}組, ${currentExercise.description}")
+                        Text(
+                            text = "${currentExercise.countOrTime} 次",
                             style = MaterialTheme.typography.displayLarge
                         )
-                    }
-                } else {
-                    ttsViewModel.speak("${currentExercise.name}, ${currentExercise.description}, ${currentExercise.countOrTime} 次一組, 第${numSet+1}組")
-                    Text(
-                        text = "${currentExercise.countOrTime} 次",
-                        style = MaterialTheme.typography.displayLarge
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Button(onClick = { isRest = true }) {
-                        Text(
-                            text = "Next",
-                            style = MaterialTheme.typography.headlineMedium
-                        )
+                        Spacer(Modifier.height(8.dp))
+                        Button(onClick = { isRest = true }) {
+                            Text(
+                                text = "Next",
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                        }
                     }
                 }
             }

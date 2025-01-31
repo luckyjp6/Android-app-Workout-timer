@@ -1,5 +1,6 @@
 package com.example.workOut.data
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -48,8 +49,6 @@ import java.util.Locale
 // Exercise menu
 @Entity(tableName = "menus")
 data class Menu (
-//    @PrimaryKey(autoGenerate = true)
-//    val id: Int = 0,
     @PrimaryKey
     var name: String,
     var estimatedTime: Int = 0
@@ -192,7 +191,7 @@ fun ExerciseInputScreen(
             onValueChange = { value ->
                 viewModel.updateExercise(exercise.copy(countOrTime = value))
             },
-            range = (1..99).toList()
+            range = (1..999).toList()
         )
     } else if (exercise.type == ExerciseType.TIMER) {
         Text(
@@ -307,6 +306,7 @@ fun DropdownMenu(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseInputWithWheel(
     value: Int,

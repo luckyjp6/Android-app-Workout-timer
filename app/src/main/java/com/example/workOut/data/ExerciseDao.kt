@@ -11,7 +11,7 @@ import androidx.room.Update
 // DAO interface (Data Access Object)
 @Dao
 interface ExerciseDao {
-//    Get data
+    // Get data
     @Query("SELECT * FROM menus")
     fun getAllMenus(): Flow<List<Menu>>
 
@@ -35,7 +35,7 @@ interface ExerciseDao {
 //    suspend fun getEstimatedTimeForMenu(menuName: String, exerciseType: ExerciseType): Int
 
 
-//    Insert
+    // Insert
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMenu(menu: Menu)
 
@@ -43,7 +43,7 @@ interface ExerciseDao {
     suspend fun insertExercise(exercise: Exercise)
 
 
-//    Update
+    // Update
     @Query("UPDATE menus SET name = :newName WHERE name = :oldName")
     suspend fun updateMenuName(oldName: String, newName: String)
 
@@ -55,7 +55,7 @@ interface ExerciseDao {
     @Update
     suspend fun updateExercise(exercise: Exercise)
 
-//    Delete
+    // Delete
     @Delete
     suspend fun deleteMenu(menu: Menu)
     @Query("DELETE FROM menus WHERE name = :menuName")

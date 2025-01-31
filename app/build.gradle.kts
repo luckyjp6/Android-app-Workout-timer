@@ -82,7 +82,6 @@ dependencies {
     kapt(libs.google.dagger.hilt.compiler)
     implementation(libs.androidx.hilt)
 
-    // Navigation
-    implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.navigation.ui)
+    // icons
+//    implementation(google.accompanist.svg)
 }

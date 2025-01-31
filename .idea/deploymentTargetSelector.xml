@@ -15,7 +15,7 @@
       </SelectionState>
       <SelectionState runConfigName="WorkOut">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-30T04:29:57.054184200Z">
+        <DropdownSelection timestamp="2025-01-31T04:47:22.851727100Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\s9725\.android\avd\Pixel_9_Pro_API_30.avd" />

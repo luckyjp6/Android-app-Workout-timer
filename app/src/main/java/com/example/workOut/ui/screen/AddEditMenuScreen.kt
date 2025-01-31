@@ -30,6 +30,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -90,20 +91,23 @@ fun AddMenuNameScreen(
     var menuName by remember { mutableStateOf("") }
     var isMenuNameValid by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
+
     LaunchedEffect(menuName) {
         viewModel.isMenuNameExists(menuName, { isExists ->
             isMenuNameValid = (!isExists) && menuName.isNotBlank()
         })
     }
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Set Menu Name") },
+                title = { Text("Set Menu Name",
+                    color = MaterialTheme.colorScheme.onPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Cancel",
+                            tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
                 actions = {
@@ -121,9 +125,11 @@ fun AddMenuNameScreen(
                             onNext(menuName)
                         }
                     ) {
-                        Icon(Icons.Default.Check, contentDescription = "Next")
+                        Icon(Icons.Default.Check, contentDescription = "Next",
+                            tint = MaterialTheme.colorScheme.onPrimary)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
             )
         }
     ) { paddingValue ->
@@ -149,12 +155,13 @@ fun AddMenuNameScreen(
                 trailingIcon = {
                     if (!isMenuNameValid) {
                         IconButton(onClick = { }) {
-                            Icon(Icons.Default.Close, contentDescription = "")
+                            Icon(Icons.Default.Close, contentDescription = "",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             if (!isMenuNameValid) {
                 if (menuName.isBlank()) {
                     Text(
@@ -191,13 +198,15 @@ fun AddExerciseScreen(
 
     val context = LocalContext.current
 
+
     Scaffold (
         topBar = {
             TopAppBar(
-                title = { Text(menuName) },
+                title = { Text(menuName, color = MaterialTheme.colorScheme.onPrimary) },
                 navigationIcon = {
                     IconButton(onClick = { onBack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
                 actions = {
@@ -215,25 +224,32 @@ fun AddExerciseScreen(
                             onSave()
                         }
                     ) {
-                        Icon(Icons.Default.Check, contentDescription = "Save")
+                        Icon(Icons.Default.Check, contentDescription = "Save",
+                            tint = MaterialTheme.colorScheme.onPrimary)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
             )
         },
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    Text("Total: ${timeStringGenerator(estimatedTime)}", style = MaterialTheme.typography.bodyLarge)
+                    Text("Total: ${timeStringGenerator(estimatedTime)}", style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primaryContainer)
                 },
                 floatingActionButton = {
-                    FloatingActionButton(onClick = { viewModel.addNewExercise(menuName = menuName) }) {
-                        Icon(Icons.Default.Add, contentDescription = "Add Exercise")
+                    FloatingActionButton(onClick = {
+                        viewModel.addNewExercise(menuName = menuName)
+                    }) {
+                        Icon(Icons.Default.Add, contentDescription = "Add Exercise",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
                 }
             )
         }
     ) { paddingValues ->
         LazyColumn(
+//            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -243,7 +259,7 @@ fun AddExerciseScreen(
             item {
                 Text(
                     text = "運動項目",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
             items(exerciseItems) { exercise ->
@@ -251,11 +267,15 @@ fun AddExerciseScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
                 ) {
                     ExerciseInputScreen(
                         viewModel = viewModel,
-                        exercise = exercise,
+                        exercise = exercise
                     )
                     // Remove button
                     Button(

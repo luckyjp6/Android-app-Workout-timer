@@ -1,13 +1,13 @@
 package com.example.workOut.ui.screen
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -30,6 +30,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -62,40 +63,48 @@ fun MenuDetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Menu details", style = MaterialTheme.typography.titleLarge) },
+                title = { Text("Menu details", style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Home")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Home",
+                            tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
                 actions = {
-                    Text(timeStringGenerator(estimatedTime))
+                    Text(timeStringGenerator(estimatedTime),
+                        color = MaterialTheme.colorScheme.onPrimary)
                     IconButton(onClick = onStart) {
-                        Icon(Icons.Default.PlayArrow, contentDescription = "Start")
+                        Icon(Icons.Default.PlayArrow, contentDescription = "Start",
+                            tint = MaterialTheme.colorScheme.onPrimary)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
             )
         },
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    Text("Total: ${timeStringGenerator(estimatedTime)}", style = MaterialTheme.typography.bodyLarge)
+                    Text("Total: ${timeStringGenerator(estimatedTime)}", style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primaryContainer)
                 },
                 floatingActionButton = {
                     Row {
-                        FloatingActionButton(
-                            onClick = { viewModel.addNewExercise(menuName = menuName) }
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = "Add Exercise")
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
                         FloatingActionButton(
                             onClick = {
                                 viewModel.deleteMenu(menuName = menuName)
                                 onBack()
                             }
                         ) {
-                            Icon(Icons.Default.Delete, contentDescription = "Remove menu")
+                            Icon(Icons.Default.Delete, contentDescription = "Remove menu",
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer)
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        FloatingActionButton(
+                            onClick = { viewModel.addNewExercise(menuName = menuName) }
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = "Add Exercise",
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
                     }
                 }
@@ -159,7 +168,11 @@ fun MenuDetailsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
                 ) {
                     if (isEditing) {
                         ExerciseInputScreen(
@@ -190,10 +203,8 @@ fun MenuDetailsScreen(
                             }
                         }
                     } else {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            Column (modifier = Modifier.padding(8.dp)) {
-                                ExerciseDisplayScreen(exercise = exercise)
-                            }
+                        Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                            ExerciseDisplayScreen(exercise = exercise)
                             IconButton(
                                 onClick = {
                                     isEditing = true
